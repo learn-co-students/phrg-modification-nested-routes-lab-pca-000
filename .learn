@@ -6,3 +6,5 @@ tags:
 languages:
   - ruby
 resources: 0
+
+parent_template: git@github.com:learn-co-curriculum/modification-nested-routes-lab.git
