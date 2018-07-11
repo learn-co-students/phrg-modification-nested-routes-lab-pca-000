@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class Song < ActiveRecord::Base
   belongs_to :artist
 
   def artist_name
-    self.try(:artist).try(:name)
+    try(:artist).try(:name)
   end
 
   def artist_name=(name)

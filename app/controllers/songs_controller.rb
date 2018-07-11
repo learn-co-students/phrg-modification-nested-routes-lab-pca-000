@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SongsController < ApplicationController
   def index
     if params[:artist_id]
@@ -12,7 +14,7 @@ class SongsController < ApplicationController
     end
   end
 
-  def show
+  def show # rubocop:disable Metrics/AbcSize
     if params[:artist_id]
       @artist = Artist.find_by(id: params[:artist_id])
       @song = @artist.songs.find_by(id: params[:id])
@@ -61,10 +63,9 @@ class SongsController < ApplicationController
     redirect_to songs_path
   end
 
-  private
+private
 
   def song_params
     params.require(:song).permit(:title, :artist_name)
   end
 end
-
