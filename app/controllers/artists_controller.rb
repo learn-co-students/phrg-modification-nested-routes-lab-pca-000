@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ArtistsController < ApplicationController
   def index
     @artists = Artist.all
@@ -44,7 +46,7 @@ class ArtistsController < ApplicationController
     redirect_to artists_path
   end
 
-  private
+private
 
   def artist_params
     params.require(:artist).permit(:name)
