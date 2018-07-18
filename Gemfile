@@ -13,6 +13,7 @@ group :development, :test do
   gem "capybara"
   gem "pry"
   gem "rspec-rails"
+  gem "rubocop", "0.58.1"
   gem "shoulda"
 end
 

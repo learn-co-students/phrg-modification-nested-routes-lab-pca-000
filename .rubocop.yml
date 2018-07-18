@@ -12,6 +12,8 @@ AllCops:
     - 'config/**/*'
     - 'test/*'
     - 'app/helpers/*'
+    - 'Gemfile'
+    - 'Rakefile'
 
 
 Layout/AccessModifierIndentation:
