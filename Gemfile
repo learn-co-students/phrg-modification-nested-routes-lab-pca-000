@@ -10,6 +10,7 @@ gem "sqlite3"
 gem "uglifier", ">= 1.3.0"
 
 group :development, :test do
+  gem "byebug"
   gem "capybara"
   gem "pry"
   gem "rspec-rails"
