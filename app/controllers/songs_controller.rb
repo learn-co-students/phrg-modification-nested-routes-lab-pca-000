@@ -14,7 +14,7 @@ class SongsController < ApplicationController
     end
   end
 
-  def show # rubocop:disable Metrics/AbcSize
+  def show
     if params[:artist_id]
       @artist = Artist.find_by(id: params[:artist_id])
       @song = @artist.songs.find_by(id: params[:id])
@@ -22,12 +22,16 @@ class SongsController < ApplicationController
         redirect_to artist_songs_path(@artist), alert: "Song not found"
       end
     else
-      @song = Song.find(params[:id])
+      song
     end
   end
 
   def new
-    @song = Song.new
+    if params[:artist_id] && !Artist.exists?(params[:artist_id])
+      redirect_to artists_path, alert: "Artist not found."
+    else
+      @song = Song.new(artist_id: params[:artist_id])
+    end
   end
 
   def create
@@ -41,24 +45,29 @@ class SongsController < ApplicationController
   end
 
   def edit
-    @song = Song.find(params[:id])
+    if params[:artist_id]
+      if artist.nil?
+        redirect_to artists_path, alert: "Artist not found."
+      elsif song.nil?
+        redirect_to artist_songs_path(artist), alert: "Song not found."
+      end
+    else
+      song
+    end
   end
 
   def update
-    @song = Song.find(params[:id])
+    song.update(song_params)
 
-    @song.update(song_params)
-
-    if @song.save
-      redirect_to @song
+    if song.save
+      redirect_to song
     else
       render :edit
     end
   end
 
   def destroy
-    @song = Song.find(params[:id])
-    @song.destroy
+    song.destroy
     flash[:notice] = "Song deleted."
     redirect_to songs_path
   end
@@ -66,6 +75,14 @@ class SongsController < ApplicationController
 private
 
   def song_params
-    params.require(:song).permit(:title, :artist_name)
+    params.require(:song).permit(:title, :artist_name, :artist_id)
+  end
+
+  def song
+    @song ||= Song.find_by(id: params[:id])
+  end
+
+  def artist
+    @artist ||= Artist.find_by(id: params[:artist_id])
   end
 end
