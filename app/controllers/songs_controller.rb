@@ -14,7 +14,7 @@ class SongsController < ApplicationController
     end
   end
 
-  def show # rubocop:disable Metrics/AbcSize
+  def show
     if params[:artist_id]
       @artist = Artist.find_by(id: params[:artist_id])
       @song = @artist.songs.find_by(id: params[:id])
@@ -22,7 +22,7 @@ class SongsController < ApplicationController
         redirect_to artist_songs_path(@artist), alert: "Song not found"
       end
     else
-      @song = Song.find(params[:id])
+      song
     end
   end
 
@@ -46,18 +46,13 @@ class SongsController < ApplicationController
 
   def edit
     if params[:artist_id]
-      artist = Artist.find_by(id: params[:artist_id])
       if artist.nil?
         redirect_to artists_path, alert: "Artist not found."
-      else
-        @song = artist.songs.find_by(id: params[:id])
-        if @song.nil?
-          redirect_to artist_songs_path(artist),
-                      alert: "Song not found."
-        end
+      elsif @song.nil?
+        redirect_to artist_songs_path(artist), alert: "Song not found."
       end
     else
-      @song = Song.find(params[:id])
+      song
     end
   end
 
@@ -81,6 +76,14 @@ class SongsController < ApplicationController
   end
 
 private
+
+  def song
+    @song ||= Song.find_by(id: params[:id])
+  end
+
+  def artist
+    @artist ||= Artist.find_by(id: params[:artist_id])
+  end
 
   def song_params
     params.require(:song).permit(:title, :artist_name, :artist_id)
