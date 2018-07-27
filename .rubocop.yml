@@ -22,6 +22,9 @@ Layout/AccessModifierIndentation:
 Lint/ScriptPermission:
   Enabled: false
 
+Metrics/MethodLength:
+  Max: 1000
+
 Naming/FileName:
   Exclude:
     - 'Guardfile'
